@@ -101,7 +101,7 @@ exports.getAllUsersForAdmin = catchAsync(async (req, res, next) => {
 
   const { search, status, role} = req.query;
 
-  let query = {...(role=="allUsers"?{role:{$in:['user','vendor','trader']}}:{role})}
+  let query = {...(role=="allUsers"?{role:{$in:['parent','child','trader']}}:{role})}
 
   if (search && search != '')
     query = {
@@ -142,9 +142,9 @@ exports.getAllUsersForAdmin = catchAsync(async (req, res, next) => {
   const users = await User.find(query).skip(skip).limit(limit);
 
   const [allUsers,allBuyers,allVendors,allTraders]=await Promise.all([
-    User.countDocuments({role:{$in:['user','vendor','trader']}}),
-    User.countDocuments({role:'user'}),
-    User.countDocuments({role:'vendor'}),
+    User.countDocuments({role:{$in:['parent','child','trader']}}),
+    User.countDocuments({role:'parent'}),
+    User.countDocuments({role:'child'}),
     User.countDocuments({role:'trader'})
   ])
 

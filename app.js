@@ -142,6 +142,7 @@ app.use('/api/v1/product-orders',productOrderRouter);
 app.use('/api/v1/service-orders',serviceOrderRouter);
 app.use('/api/v1/banners',bannerRouter);
 app.use('/api/v1/chats',chatRouter);
+app.use('/api/v1/gratitude',writeGratitudeRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));

@@ -126,6 +126,9 @@ const userSchema = new mongoose.Schema(
     shippingDetails:{
       type:ShippingDetailSchema
     },
+    gratitude: {
+      type: String
+    }
   },
   {
     timestamps: true,

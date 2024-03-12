@@ -39,8 +39,8 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['admin','user','vendor','trader'],
-      default: 'user',
+      enum: ['admin','parent','child'],
+      default: 'parent',
     },
     email: {
       type: String,
@@ -49,6 +49,15 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       validate: [validator.isEmail, 'Please provide a valid email'],
       index: true,
+    },
+    dob: {
+      type: String,
+    },
+    scoringLevel: {
+      type: String,
+    },
+    gender: {
+      type: String,
     },
     phoneNumber: {
       type: String,
@@ -77,6 +86,9 @@ const userSchema = new mongoose.Schema(
     isVerified: {
       type: Boolean,
       default: false,
+    },
+    children: {
+      type:[{type:mongoose.Schema.Types.ObjectId,ref:"Children"}]
     },
     favourites:{
       type:[{type:mongoose.Schema.Types.ObjectId,ref:"Product"}]
@@ -126,9 +138,6 @@ const userSchema = new mongoose.Schema(
     shippingDetails:{
       type:ShippingDetailSchema
     },
-    gratitude: {
-      type: String
-    }
   },
   {
     timestamps: true,

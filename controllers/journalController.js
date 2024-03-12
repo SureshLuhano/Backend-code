@@ -24,7 +24,7 @@ exports.writeJournal = async (req, res, next) => {
         await journal.save();
 
         // Respond with a success message and the created journal entry
-        res.status(201).json({message: "Journal created successfully...", data: journal});
+        res.status(201);
     } catch (error) {
         // Handle any errors that occur during the process
         console.error(error);

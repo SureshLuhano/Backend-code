@@ -30,12 +30,6 @@ router.get('/verify-me/:id', authController.verifyMe);
 //when user forgots password hit this api on 2nd step
 router.post('/verify-forgot-password-otp', authController.verifyForgotPasswordOtp);
 
-//get another user detail api
-router.route('/detail/:id').get(userController.getUser)
-
-//get all users public api
-router.route('/').get(userController.getAllUsers);
-
 // Protect all routes after this middleware with token
 router.use(authController.protect);
 
@@ -57,8 +51,6 @@ router.post('/logout', authController.logout);
 //update password api
 router.patch('/updateMyPassword', authController.updatePassword);
 
-//update me api
-router.patch('/updateMe',uploadUserImage,userController.updateMe);
 
 /*  --------------------- STRIPE ---------------------  */
 router.route('/attach-payment-method').post(authController.restrictTo('user'),attachedPaymentMethod);
@@ -71,6 +63,5 @@ router.use(authController.restrictTo('admin'));
 
 router.route('/admin/all').get(userController.getAllUsersForAdmin);
 
-router.route('/activate-deactivate/:id').patch(userController.activeDeactiveUser);
 
 module.exports = router;

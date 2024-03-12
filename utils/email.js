@@ -9,7 +9,7 @@ module.exports = class Email {
     // this.firstName = user.name.split(' ')[0];
     this.firstName = user.name;
     this.url = url;
-    this.from = `Kokoranch <${process.env.EMAIL_FROM}>`;
+    this.from = `4-Pillar <${process.env.EMAIL_FROM}>`;
   }
 
   newTransport() {
@@ -50,7 +50,7 @@ module.exports = class Email {
   }
 
   async sendWelcome() {
-    await this.send('welcome', 'Welcome to the Kokoranch Family!');
+    await this.send('welcome', 'Welcome to the 4-Pillar Family!');
   }
 
   async signupAndJobPost(payload) {
@@ -70,7 +70,7 @@ module.exports = class Email {
   async sendPasswordResetComfirmation() {
     await this.send(
       'passwordResetComfirmation',
-      'Kokoranch Password Change Notification'
+      '4-Pillar Password Change Notification'
     );
   }
 

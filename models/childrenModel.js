@@ -3,8 +3,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 
-
-const userSchema = new mongoose.Schema(
+const childrenSchema = new mongoose.Schema(
   {
     photo: {
       type: String,
@@ -21,7 +20,7 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       enum: ['admin','parent','child'],
-      default: 'parent',
+      default: 'child',
     },
     email: {
       type: String,
@@ -71,9 +70,6 @@ const userSchema = new mongoose.Schema(
     children: {
       type:[{type:mongoose.Schema.Types.ObjectId,ref:"Children"}]
     },
-    favourites:{
-      type:[{type:mongoose.Schema.Types.ObjectId,ref:"Product"}]
-    },
     password: {
       type: String,
       minlength: 8,
@@ -101,13 +97,6 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    socketId: {
-      type:String
-    },
-    cus: {
-      type: String,
-      // required: [true, 'stripe customer id is required.'],
-    },
     lastLogin: {
       type: Date,
       default: Date.now(),
@@ -115,9 +104,6 @@ const userSchema = new mongoose.Schema(
     lastLogin: {
       type: Date,
       default: Date.now(),
-    },
-    shippingDetails:{
-      type:ShippingDetailSchema
     },
   },
   {
@@ -181,6 +167,6 @@ userSchema.methods.createPasswordResetToken = function () {
   return resetToken;
 };
 
-const User = mongoose.model('User', userSchema);
+const Children = mongoose.model('children', childrenSchema);
 
-module.exports = User;
+module.exports = Children;

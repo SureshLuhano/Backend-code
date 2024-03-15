@@ -32,3 +32,22 @@ exports.writeJournal = async (req, res, next) => {
     }
 }
 
+
+exports.getJournal = async(req, res, next) => {
+    try {
+        const {userId} = req.body;
+        const gratitudeData = await Gratitude.find({userId: userId});
+        res.status(200).json({
+            status: 'success',
+            results: gratitudeData.length,
+            data: {
+                gratitudeData
+            }
+        });
+    } catch (error) {
+        res.status(500).json({
+            status: 'error',
+            message: 'Something went wrong!'
+        });
+    };
+ };

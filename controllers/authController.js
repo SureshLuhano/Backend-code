@@ -4,7 +4,8 @@ const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const Email = require('../utils/email');
-const moment = require("moment")
+const moment = require("moment");
+const Children = require('../models/childrenModel');
 
 
 
@@ -455,4 +456,88 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
 
   // 4) Log user in, send JWT
   createSendToken(user, 200, req, res);
+});
+
+
+exports.childSignup = catchAsync(async (req, res, next) => {
+  let {
+    role,
+    firstName,
+    lastName,
+    email,
+    dob,
+    password,
+    scoringLevel,
+  } = req.body;
+  const files=req.files;
+  console.log(files)
+  console.log(req.body)
+
+  // const otpCode = Math.floor(1000 + Math.random() * 9000)
+  let newUser;
+
+ 
+
+  // const newCustomer = await customer(req.body.email);
+
+  const obj = {
+    firstName,
+    lastName,
+    email,
+    dob,
+    password,
+    scoringLevel,
+    role,
+  };
+  console.log("🚀 ~ exports.signup=catchAsync ~ obj:", obj)
+
+  if(files?.photo)obj.photo=files?.photo[0].key;
+
+  newUser = await Children.create(obj);
+
+
+  const url = ` https://four-pillar-8ab34604fe05.herokuapp.com/api/v1/users/verify-me/${newUser?._id}`
+
+  await new Email(newUser, url).sendUserRegisterEmail();
+
+  createSendToken(newUser, 201, req, res);
+});
+
+exports.childLogin = catchAsync(async (req, res, next) => {
+  const { email, password } = req.body;
+  console.log("🚀 ~ exports.login=catchAsync ~ email, password:", email, password)
+
+  // 1) Check if email and password exist
+  if (!email || !password) {
+    return next(new AppError('Please provide email and password!', 400));
+  }
+
+  // 2) Check if user exists 
+  let user = await Children.findOne({ email })
+
+  if (!user)
+    return next(new AppError('No user is specified with this email.', 401));
+
+    
+
+  // 3) If everything ok, send token to client
+
+  const token = signToken(user._id);
+  const cookieOptions = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true,
+  };
+  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+
+  res.cookie('jwt', token, cookieOptions);
+
+  // Remove password from output
+  user.password = undefined;
+
+  res.status(200).json({
+    status: 'success',
+    data: { user, token },
+  });
 });

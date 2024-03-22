@@ -116,9 +116,6 @@ const userSchema = new mongoose.Schema(
       type: Date,
       default: Date.now(),
     },
-    shippingDetails:{
-      type:ShippingDetailSchema
-    },
   },
   {
     timestamps: true,

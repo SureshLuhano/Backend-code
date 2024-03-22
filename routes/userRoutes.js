@@ -51,6 +51,10 @@ router.post('/logout', authController.logout);
 //update password api
 router.patch('/updateMyPassword', authController.updatePassword);
 
+// Children routes
+router.post('/children-register', authController.childSignup);
+router.post('/children-login', authController.childLogin);
+
 
 /*  --------------------- STRIPE ---------------------  */
 router.route('/attach-payment-method').post(authController.restrictTo('user'),attachedPaymentMethod);
